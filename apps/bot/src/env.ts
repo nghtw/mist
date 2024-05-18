@@ -1,17 +1,14 @@
 import { container } from "@sapphire/pieces";
 import * as dotenv from "dotenv";
 import { z } from "zod";
-import { coerceBooleanSchema, coerceableTrue } from "./utils/schemas.js";
 
 dotenv.config({ path: [".env", "../../.env"] });
 
 const envSchema = z.object({
+  NODE_ENV: z.string().default("development"),
   CLIENT_ID: z.string(),
   BOT_TOKEN: z.string(),
-  ENABLE_API: coerceBooleanSchema.default(coerceableTrue),
   DATABASE_URL: z.string().url(),
-  PORT: z.coerce.number().default(8080),
-  NODE_ENV: z.string().default("development"),
   GUILD_IDS: z
     .string()
     .transform((value) => value.replaceAll(" ", "").split(",")),
