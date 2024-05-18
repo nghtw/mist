@@ -13,6 +13,7 @@ const envSchema = z.object({
     .transform((value) => value.replaceAll(" ", "").split(",")),
 });
 
+// NOTE: `container.logger` can't be used here because env is used before the client is created
 export const env = (() => {
   const parsed = envSchema.safeParse(process.env);
   if (!parsed.success) {
