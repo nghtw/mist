@@ -1,6 +1,6 @@
 import { Command, CommandOptionsRunTypeEnum } from "@sapphire/framework";
-import { TagBitsetOption, getBoardChannelConfig } from "../functions/config.js";
 import { PermissionFlagsBits } from "discord.js";
+import { TagBitsetOption, getBoardChannelConfig } from "../functions/config.js";
 
 export class BoardDebugCommand extends Command {
   public constructor(context: Command.LoaderContext, options: Command.Options) {

@@ -2,8 +2,8 @@ import { type Command, CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import type { GuildChannel, Options, TextChannel } from "discord.js";
 import { assert } from "../../../utils/assert.js";
-import { getTicketsConfig } from "../functions/config.js";
 import { localizedReply } from "../../../utils/localized-reply.js";
+import { getTicketsConfig } from "../functions/config.js";
 
 export class TicketCommand extends Subcommand {
   constructor(context: Subcommand.LoaderContext, options: Options) {

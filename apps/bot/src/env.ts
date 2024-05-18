@@ -1,7 +1,7 @@
+import { container } from "@sapphire/pieces";
 import * as dotenv from "dotenv";
 import { z } from "zod";
 import { coerceBooleanSchema, coerceableTrue } from "./utils/schemas.js";
-import { container } from "@sapphire/pieces";
 
 dotenv.config({ path: [".env", "../../.env"] });
 

@@ -1,8 +1,8 @@
 import { Command, CommandOptionsRunTypeEnum, none } from "@sapphire/framework";
 import { PermissionFlagsBits } from "discord.js";
-import { getManagedRolesConfig } from "../functions/config.js";
 import { assert } from "../../../utils/assert.js";
 import { localizedReply } from "../../../utils/localized-reply.js";
+import { getManagedRolesConfig } from "../functions/config.js";
 
 /**
  * This doesn't extend Subcommand because most logic is shared.
