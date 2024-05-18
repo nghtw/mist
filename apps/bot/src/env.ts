@@ -12,7 +12,9 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   PORT: z.coerce.number().default(8080),
   NODE_ENV: z.string().default("development"),
-  GUILD_IDS: z.string().transform((value) => value.replaceAll(" ", "").split(","))
+  GUILD_IDS: z
+    .string()
+    .transform((value) => value.replaceAll(" ", "").split(",")),
 });
 
 export const env = (() => {
