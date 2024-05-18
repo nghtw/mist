@@ -12,9 +12,6 @@
     "lint:fix": {},
     "format": {},
     "format:fix": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
+    "dev": { "dependsOn": ["^db:generate"], "cache": false, "persistent": true }
   }
 }
