@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@mist/database": "workspace:*",
     "@sapphire/discord.js-utilities": "^7.2.1",
