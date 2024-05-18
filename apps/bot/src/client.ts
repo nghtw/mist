@@ -1,11 +1,11 @@
 import "@sapphire/plugin-logger/register";
 import "@sapphire/plugin-subcommands/register";
 
-import { container, SapphireClient } from "@sapphire/framework";
-import { getRootData } from "@sapphire/pieces";
-import { PrismaClient } from "@mist/database";
-import { IntentsBitField } from "discord.js";
 import { join } from "node:path";
+import { PrismaClient } from "@mist/database";
+import { SapphireClient, container } from "@sapphire/framework";
+import { getRootData } from "@sapphire/pieces";
+import { IntentsBitField } from "discord.js";
 
 declare module "@sapphire/pieces" {
   interface Container {

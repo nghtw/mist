@@ -1,8 +1,8 @@
+import { BoardTagConfig } from "@mist/database";
 import { Listener } from "@sapphire/framework";
 import { type AnyThreadChannel, ChannelType } from "discord.js";
 import { assert } from "../../../utils/assert.js";
 import { TagBitsetOption, getBoardChannelConfig } from "../functions/config.js";
-import { BoardTagConfig } from "@mist/database";
 
 export class BoardsThreadUpdateListener extends Listener<"threadUpdate"> {
   public constructor(

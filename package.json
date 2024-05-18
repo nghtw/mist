@@ -6,8 +6,6 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "format": "turbo format",
-    "format:fix": "turbo format:fix",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix"
   },
