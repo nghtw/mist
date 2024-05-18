@@ -1,4 +1,3 @@
-import { container } from "@sapphire/pieces";
 import * as dotenv from "dotenv";
 import { z } from "zod";
 
@@ -17,9 +16,9 @@ const envSchema = z.object({
 export const env = (() => {
   const parsed = envSchema.safeParse(process.env);
   if (!parsed.success) {
-    container.logger.error("Invalid env variables!");
+    console.error("Invalid env variables!");
     for (const error of parsed.error.errors) {
-      container.logger.error(`- ${error.path.join(".")} ${error.message}`);
+      console.error(`- ${error.path.join(".")} ${error.message}`);
     }
     process.exit(1);
   }
