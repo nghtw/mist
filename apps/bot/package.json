@@ -6,10 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon -e js,mjs,cjs,ts,mts,cts,json --ignore dist --exec 'rimraf dist && tsc && node dist/main.js'",
-    "format": "biome check . ./src",
-    "format:fix": "biome format --write ./src",
-    "lint": "biome lint ./src",
-    "lint:fix": "biome lint --apply ./src",
+    "lint": "biome check ./src",
+    "lint:fix": "biome check --apply ./src",
     "start": "node dist/main.js"
   },
   "keywords": [],
