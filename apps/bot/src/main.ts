@@ -2,7 +2,7 @@ import { ApplicationCommandRegistries } from "@sapphire/framework";
 import { MistSapphireClient } from "./client.js";
 import { env } from "./env.js";
 
-ApplicationCommandRegistries.setDefaultGuildIds(["889120629763235850"]);
+ApplicationCommandRegistries.setDefaultGuildIds(env.GUILD_IDS);
 
 const client = new MistSapphireClient();
 
