@@ -1,0 +1,10 @@
+node_modules
+.turbo
+
+dist
+
+# Prisma generated files
+**/prisma/client
+
+.env*
+!.env.example

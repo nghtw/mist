@@ -1,0 +1,44 @@
+{
+  "name": "@mist/bot",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon -e js,mjs,cjs,ts,mts,cts,json --ignore dist --exec 'rimraf dist && tsc && node dist/main.js'",
+    "format": "biome check . ./src",
+    "format:fix": "biome format --write ./src",
+    "lint": "biome lint ./src",
+    "lint:fix": "biome lint --apply ./src",
+    "start": "node dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mist/database": "workspace:*",
+    "@sapphire/discord.js-utilities": "^7.2.1",
+    "@sapphire/framework": "^5.2.1",
+    "@sapphire/pieces": "^4.2.2",
+    "@sapphire/plugin-i18next": "^7.1.2",
+    "@sapphire/plugin-logger": "^4.0.2",
+    "@sapphire/plugin-subcommands": "^6.0.3",
+    "discord.js": "14.x",
+    "dotenv": "^16.4.5",
+    "lodash": "^4.17.21",
+    "pino": "^8.20.0",
+    "pino-pretty": "^11.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/lodash": "^4.17.4",
+    "eslint": "^9.0.0",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.10.5",
+    "type-fest": "^4.15.0",
+    "typescript-eslint": "^7.6.0"
+  }
+}

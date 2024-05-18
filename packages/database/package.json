@@ -1,0 +1,23 @@
+{
+  "name": "@mist/database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "scripts": {
+    "db:format": "prisma format",
+    "db:generate": "prisma generate",
+    "db:push": "dotenv -e ../../.env -c prisma db push",
+    "db:studio": "dotenv -e ../../.env -c prisma studio"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "5.14.0",
+    "@types/node": "^20.12.7",
+    "mysql2": "^3.9.4"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.2",
+    "prisma": "^5.14.0"
+  }
+}

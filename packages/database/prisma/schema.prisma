@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model BoardChannelConfig {
+  channelId BigInt           @id
+  guildId   BigInt
+  guild     Guild            @relation(fields: [guildId], references: [id])
+  enabled   Boolean          @default(false)
+  tags      BoardTagConfig[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+}
+
+model BoardTagConfig {
+  tagId         BigInt             @id
+  channelId     BigInt
+  name          String
+  moderated     Boolean
+  emojiId       String?
+  emojiName     String?
+  isStatus      Boolean            @default(false)
+  statusOptions Int                @default(0)
+  channel       BoardChannelConfig @relation(fields: [channelId], references: [channelId])
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @default(now()) @updatedAt
+}
+
+model Guild {
+  id                  BigInt               @id
+  tickets             Ticket[]
+  ticketConfig        TicketConfig[]
+  boardChannelsConfig BoardChannelConfig[]
+  managedRolesConfig  ManagedRoleConfig[]
+}
+
+model ManagedRoleConfig {
+  roleId    BigInt   @id
+  guildId   BigInt
+  guild     Guild    @relation(fields: [guildId], references: [id])
+  managerId BigInt
+  enabled   Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Ticket {
+  channelId BigInt    @id
+  guildId   BigInt
+  localId   BigInt
+  userId    BigInt
+  guild     Guild     @relation(fields: [guildId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  closedAt  DateTime?
+}
+
+model TicketConfig {
+  guildId        BigInt   @id
+  guild          Guild    @relation(fields: [guildId], references: [id])
+  enabled        Boolean  @default(false)
+  categoryId     BigInt?
+  localIdCounter BigInt   @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+}
