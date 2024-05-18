@@ -19,7 +19,7 @@ export const env = (() => {
   if (!parsed.success) {
     console.error("Invalid env variables!");
     for (const error of parsed.error.errors) {
-      console.error(`- ${error.path.join(".")} ${error.message}`);
+      console.error(`- ${error.path.join(".")}: ${error.message}`);
     }
     process.exit(1);
   }
