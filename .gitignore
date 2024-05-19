@@ -1,10 +1,15 @@
 node_modules
-.turbo
 
+# Output of the build
 dist
+
+# Turbo
+.turbo
+out
 
 # Prisma generated files
 **/prisma/client
 
+# Environment variables
 .env*
 !.env.example
