@@ -203,7 +203,6 @@ export class TicketCommand extends Subcommand {
           }
         ),
       });
-      return;
     }
 
     await channel.send({
