@@ -184,13 +184,14 @@ export class TicketCommand extends Subcommand {
     });
 
     await channel.send({
-      content: localizedReply(
-        interaction,
-        `Ticket of <@${interaction.user.id}>, reason: ${reason}`,
-        {
-          pl: `Zgłoszenie <@${interaction.user.id}>, powód: ${reason}`,
-        }
-      ),
+      content: (
+        config.ticketCreatedMessage ??
+        localizedReply(interaction, "Ticket of <@{userId}>, reason: {reason}", {
+          pl: "Zgłoszenie <@{userId}>, powód: {reason}",
+        })
+      )
+        .replaceAll("{userId}", interaction.user.id || "")
+        .replaceAll("{reason}", reason || ""),
     });
 
     await interaction.editReply({

@@ -9,13 +9,15 @@ datasource db {
 }
 
 model BoardChannelConfig {
-  channelId BigInt           @id
-  guildId   BigInt
-  guild     Guild            @relation(fields: [guildId], references: [id])
-  enabled   Boolean          @default(false)
-  tags      BoardTagConfig[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @default(now()) @updatedAt
+  channelId                  BigInt           @id
+  guildId                    BigInt
+  guild                      Guild            @relation(fields: [guildId], references: [id])
+  enabled                    Boolean          @default(false)
+  tags                       BoardTagConfig[]
+  threadCreatedMessage       String?
+  threadStatusChangedMessage String?
+  createdAt                  DateTime         @default(now())
+  updatedAt                  DateTime         @default(now()) @updatedAt
 }
 
 model BoardTagConfig {
@@ -62,11 +64,12 @@ model Ticket {
 }
 
 model TicketConfig {
-  guildId        BigInt   @id
-  guild          Guild    @relation(fields: [guildId], references: [id])
-  enabled        Boolean  @default(false)
-  categoryId     BigInt?
-  localIdCounter BigInt   @default(1)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now()) @updatedAt
+  guildId              BigInt   @id
+  guild                Guild    @relation(fields: [guildId], references: [id])
+  enabled              Boolean  @default(false)
+  categoryId           BigInt?
+  localIdCounter       BigInt   @default(1)
+  ticketCreatedMessage String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
 }

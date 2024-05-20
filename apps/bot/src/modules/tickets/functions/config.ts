@@ -6,6 +6,7 @@ export async function getTicketsConfig(guildId: bigint) {
       guildId: true,
       enabled: true,
       categoryId: true,
+      ticketCreatedMessage: true,
     },
     where: {
       guildId,

@@ -18,6 +18,8 @@ export async function getBoardChannelConfig(channelId: bigint) {
     },
     select: {
       enabled: true,
+      threadCreatedMessage: true,
+      threadStatusChangedMessage: true,
       tags: {
         select: {
           tagId: true,
