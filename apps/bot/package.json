@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon -e js,mjs,cjs,ts,mts,cts,json --ignore dist --exec 'rimraf dist && tsc && node dist/main.js'",
+    "dev": "nodemon -e js,mjs,cjs,ts,mts,cts,json --ignore 'dist/**/*' --exec 'rimraf dist && tsc && node dist/main.js'",
     "lint": "biome check ./src",
     "lint:fix": "biome check --apply ./src",
     "start": "node dist/main.js"
