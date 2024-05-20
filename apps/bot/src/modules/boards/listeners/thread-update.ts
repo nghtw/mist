@@ -73,8 +73,8 @@ export class BoardsThreadUpdateListener extends Listener<"threadUpdate"> {
         );
         await newThread.send({
           content: (
-            config.threadStatusChangedMessage ?? "Status changed to {name}."
-          ).replaceAll("{name}", status.name || ""),
+            config.threadStatusChangedMessage ?? "Status changed to {tagName}."
+          ).replaceAll("{tagName}", status.name || ""),
         });
       }
       return;
@@ -107,8 +107,8 @@ export class BoardsThreadUpdateListener extends Listener<"threadUpdate"> {
         );
         await newThread.send({
           content: (
-            config.threadStatusChangedMessage ?? "Status changed to {name}."
-          ).replaceAll("{name}", status.name || ""),
+            config.threadStatusChangedMessage ?? "Status changed to {tagName}."
+          ).replaceAll("{tagName}", status.name || ""),
         });
       }
       return;
@@ -129,8 +129,8 @@ export class BoardsThreadUpdateListener extends Listener<"threadUpdate"> {
       );
       await newThread.send({
         content: (
-          config.threadStatusChangedMessage ?? "Status changed to {name}."
-        ).replaceAll("{name}", status.name || ""),
+          config.threadStatusChangedMessage ?? "Status changed to {tagName}."
+        ).replaceAll("{tagName}", status.name || ""),
       });
 
       // Lock/unlock thread based on status tag
