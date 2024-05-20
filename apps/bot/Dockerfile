@@ -39,5 +39,6 @@ RUN adduser --system --uid 1001 nodejs
 USER nodejs
  
 COPY --from=builder /app/ .
- 
-CMD node apps/bot/dist/main.js
+
+WORKDIR /app/apps/bot
+CMD node dist/main.js
