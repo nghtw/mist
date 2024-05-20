@@ -65,11 +65,14 @@ export class BoardsThreadCreateListener extends Listener<"threadCreate"> {
       `BoardsThreadCreateListener: Thread created with status ${status.name} in channel ${channelId}`
     );
 
+    const tagName = channel.availableTags.find(
+      (tag) => tag.id === status.tagId.toString()
+    )?.name;
+
     await thread.send({
-      content: `Thread created with status ${
-        channel.availableTags.find((tag) => tag.id === status.tagId.toString())
-          ?.name
-      }`,
+      content: (
+        config.threadCreatedMessage ?? "Thread created with status {name}."
+      ).replaceAll("{name}", tagName || ""),
     });
   }
 }
