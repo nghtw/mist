@@ -176,12 +176,34 @@ export class TicketCommand extends Subcommand {
       name: `ticket-${localIdCounter}-${interaction.user.username}`,
     });
 
-    // Add permissions for the creator of the ticket
-    await channel.permissionOverwrites.create(interaction.user, {
-      ViewChannel: true,
-      SendMessages: true,
-      ReadMessageHistory: true,
-    });
+    try {
+      // Add permissions for the creator of the ticket
+      await channel.permissionOverwrites.create(interaction.user, {
+        ViewChannel: true,
+        SendMessages: true,
+        ReadMessageHistory: true,
+      });
+
+      await interaction.editReply({
+        content: localizedReply(
+          interaction,
+          `Created a ticket: <#${channel.id}>.`,
+          {
+            pl: `Utworzono zgłoszenie: <#${channel.id}>.`,
+          }
+        ),
+      });
+    } catch {
+      await interaction.editReply({
+        content: localizedReply(
+          interaction,
+          "Created a ticket: <#{channelId}>, but failed to set permissions for the ticket channel. Either you have superpowers or something went wrong - in that case contact the server administrator.",
+          {
+            pl: "Utworzono zgłoszenie: <#{channelId}>, ale nie udało mi się nadać Ci uprawnień dla kanału zgłoszenia. Albo masz supermoce albo coś poszło nie tak - w tym drugim przypadku skontaktuj się z administratorem serwera.",
+          }
+        ),
+      });
+    }
 
     await channel.send({
       content: (
@@ -192,16 +214,6 @@ export class TicketCommand extends Subcommand {
       )
         .replaceAll("{userId}", interaction.user.id || "")
         .replaceAll("{reason}", reason || ""),
-    });
-
-    await interaction.editReply({
-      content: localizedReply(
-        interaction,
-        `Created a ticket: <#${channel.id}>.`,
-        {
-          pl: `Utworzono zgłoszenie: <#${channel.id}>.`,
-        }
-      ),
     });
   }
 
