@@ -1,8 +1,14 @@
-import { ApplicationCommandRegistries } from "@sapphire/framework";
+import {
+  ApplicationCommandRegistries,
+  RegisterBehavior,
+} from "@sapphire/framework";
 import { MistSapphireClient } from "./client.js";
 import { env } from "./env.js";
 
 ApplicationCommandRegistries.setDefaultGuildIds(env.GUILD_IDS);
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(
+  RegisterBehavior.BulkOverwrite
+);
 
 const client = new MistSapphireClient();
 
