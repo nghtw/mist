@@ -69,13 +69,11 @@ export class BoardsThreadCreateListener extends Listener<"threadCreate"> {
       (tag) => tag.id === status.tagId.toString()
     )?.name;
 
-    const lastMessage = await thread.lastMessage?.fetch();
-
     await thread.send({
       content: (
         config.threadCreatedMessage ?? "Thread created with status {tagName}."
       )
-        .replaceAll("{userId}", lastMessage?.author.id || "")
+        .replaceAll("{userId}", thread.ownerId || "")
         .replaceAll("{tagName}", tagName || ""),
     });
   }
