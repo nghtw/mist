@@ -12,7 +12,6 @@ export class ManagedRolesManagedRoleCommand extends Command {
     super(context, {
       ...options,
       runIn: CommandOptionsRunTypeEnum.GuildAny,
-      requiredUserPermissions: [PermissionFlagsBits.Administrator],
     });
   }
 
