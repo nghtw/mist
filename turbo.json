@@ -8,8 +8,10 @@
     "db:generate": {
       "outputs": ["prisma/client/**"]
     },
-    "lint": {},
-    "lint:fix": {},
+    "lint": {
+      "dependsOn": ["^db:generate"]
+    },
+    "lint:fix": { "dependsOn": ["^db:generate"] },
     "format": {},
     "format:fix": {},
     "dev": { "dependsOn": ["^db:generate"], "cache": false, "persistent": true }
