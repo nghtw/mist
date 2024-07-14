@@ -15,6 +15,7 @@
   "organizeImports": { "enabled": true },
   "linter": {
     "enabled": true,
+    "ignore": ["apps/web/"],
     "rules": {
       "recommended": true
     }
