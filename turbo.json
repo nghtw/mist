@@ -14,8 +14,10 @@
         "prisma/client/**"
       ]
     },
-    "lint": {},
-    "lint:fix": {},
+    "lint": {
+      "dependsOn": ["^db:generate"]
+    },
+    "lint:fix": { "dependsOn": ["^db:generate"] },
     "format": {},
     "format:fix": {},
     "dev": {
