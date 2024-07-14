@@ -2,11 +2,17 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^db:generate"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^db:generate"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "db:generate": {
-      "outputs": ["prisma/client/**"]
+      "outputs": [
+        "prisma/client/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^db:generate"]
