@@ -2,10 +2,11 @@ node_modules
 
 # Output of the build
 dist
+out
+build
 
 # Turbo
 .turbo
-out
 
 # Prisma generated files
 **/prisma/client
@@ -13,3 +14,10 @@ out
 # Environment variables
 .env*
 !.env.example
+
+# next.js
+.next/
+next-env.d.ts
+
+# misc
+.DS_Store

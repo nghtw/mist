@@ -7,13 +7,13 @@ export class BoardDebugCommand extends Command {
     super(context, {
       ...options,
       runIn: CommandOptionsRunTypeEnum.GuildAny,
-      requiredUserPermissions: [PermissionFlagsBits.Administrator],
     });
   }
 
   public override registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand((builder) =>
       builder
+        .setDefaultMemberPermissions("0")
         .setName("board-debug")
         .setNameLocalizations({
           pl: "forum-debug",
