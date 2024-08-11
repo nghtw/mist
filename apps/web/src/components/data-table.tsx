@@ -26,10 +26,10 @@ import {
   MultiSelectorItem,
   MultiSelectorList,
   MultiSelectorTrigger,
-} from "../components/ui/multiselect";
+} from "./ui/multiselect";
 
-import { Button } from "../components/ui/button"
-import { Checkbox } from "../components/ui/checkbox"
+import { Button } from "./ui/button"
+import { Checkbox } from "./ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -38,8 +38,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
-import { Input } from "../components/ui/input"
+} from "./ui/dropdown-menu"
+import { Input } from "./ui/input"
 import {
   Table,
   TableBody,
@@ -47,7 +47,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components/ui/table"
+} from "./ui/table"
 
 const data: Payment[] = [
   {
@@ -182,7 +182,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ]
 
-export function DataTableDemo() {
+export function DataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -218,7 +218,7 @@ export function DataTableDemo() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter"
+          placeholder="Wyszukaj"
           value={(table.getColumn("topic")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("topic")?.setFilterValue(event.target.value)
@@ -226,12 +226,12 @@ export function DataTableDemo() {
           className="max-w-sm"
         />
         
-        <MultiSelector values={valueMultiSelect} onValuesChange={setValueMultiSelect} loop className="max-w-xs ml-4">
-        <MultiSelectorTrigger>
-          <MultiSelectorInput placeholder="Select tags" />
-        </MultiSelectorTrigger>
+        <MultiSelector values={valueMultiSelect} onValuesChange={setValueMultiSelect} loop className="max-w-xs ml-4 ">
+          <MultiSelectorTrigger>
+            <MultiSelectorInput placeholder="Wybierz tagi" />
+          </MultiSelectorTrigger>
         <MultiSelectorContent >
-          <MultiSelectorList className="z-10 text-white" >
+          <MultiSelectorList className="z-10 text-white bg-sky-900" >
             <MultiSelectorItem value={"Smoki"} className="z-50">Smoki</MultiSelectorItem>
             <MultiSelectorItem value={"Wyprawy"}>Wyprawy</MultiSelectorItem>
             <MultiSelectorItem value={"Nowe"}>Nowe</MultiSelectorItem>
@@ -309,7 +309,7 @@ export function DataTableDemo() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Brak wyników.
                 </TableCell>
               </TableRow>
             )}
@@ -318,8 +318,8 @@ export function DataTableDemo() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground text-white">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} z {" "}
+          {table.getFilteredRowModel().rows.length} wierszy wybrano.
         </div>
         <div className="space-x-2">
           <Button
