@@ -34,6 +34,8 @@ export class BoardsThreadCreateListener extends Listener<"threadCreate"> {
       "Channel is not a board channel"
     );
 
+    
+
     const status = config.tags.find(
       (tag) =>
         tag.isStatus &&

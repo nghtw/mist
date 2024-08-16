@@ -73,3 +73,20 @@ model TicketConfig {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
 }
+
+
+
+model ContentThreads {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  //updatedAt DateTime @default(now()) @updatedAt
+}
+
+model ContentComments{
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  //updatedAt DateTime @default(now()) @updatedAt
+}
