@@ -49,50 +49,11 @@ import {
   TableRow,
 } from "./ui/table"
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    tags: ['smoki','nowe'],
-    topic: "Zwiększe ilości lootu",
-    nickname: "Żubr",
-  },
-  {
-    id: "3u1reuv4",
-    tags: ['smoki','nowe'],
-    topic: "Dodanie nowego wariantu",
-    nickname: "Bóbr",
-  },
-  {
-    id: "derv1ws0",
-    tags: ['smoki','nowe'],
-    topic: "Wipe bety",
-    nickname: "Łoś",
-  },
-  {
-    id: "5kma53ae",
-    tags: ['smoki','wyprawy'],
-    topic: "Placeholder topic",
-    nickname: "Lis",
-  },
-  {
-    id: "bhqecj4p",
-    tags: ['smoki','nowe'],
-    topic: "Placeholder topic",
-    nickname: "Wilk",
-  },
-  {
-    id: "bhqecj4s",
-    tags: ['smoki','nowe'],
-    topic: "Placeholder topic",
-    nickname: "Kuna",
-  },
-  {
-    id: "bhqecj4c",
-    tags: ['smoki','walka'],
-    topic: "Placeholder topic",
-    nickname: "Koń",
-  },
-]
+import { useEffect } from "react";
+import { getTopics } from "~/server/actions/get-topics";
+import { set } from "zod";
+
+
 
 export type Payment = {
   id: string
@@ -182,7 +143,19 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ]
 
-export function DataTable() {
+export function DataTable()  {
+
+  useEffect(() => {
+    void (async () => {
+      const res = await getTopics(null);
+      if(!res?.data){return;}
+      setData(res?.data);
+  })();
+  }, []);
+
+
+  const [data, setData] = React.useState<Payment[]>([])
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -230,8 +203,8 @@ export function DataTable() {
           <MultiSelectorTrigger>
             <MultiSelectorInput placeholder="Wybierz tagi" />
           </MultiSelectorTrigger>
-        <MultiSelectorContent >
-          <MultiSelectorList className="z-10 text-white bg-sky-900" >
+        <MultiSelectorContent>
+          <MultiSelectorList className="z-10 text-white bg-slate-950" >
             <MultiSelectorItem value={"Smoki"} className="z-50">Smoki</MultiSelectorItem>
             <MultiSelectorItem value={"Wyprawy"}>Wyprawy</MultiSelectorItem>
             <MultiSelectorItem value={"Nowe"}>Nowe</MultiSelectorItem>
@@ -268,7 +241,7 @@ export function DataTable() {
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-slate-950">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -286,7 +259,7 @@ export function DataTable() {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-gray-950">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
