@@ -12,19 +12,19 @@ export const getTopics = actionClient
     const tempData = [
         {
           id: "m5gr84i9",
-          tags: ['smoki','nowe'],
+          tags: ['smoki'],
           topic: "Zwiększe ilości lootu",
           nickname: "Żubr",
         },
         {
           id: "3u1reuv4",
-          tags: ['smoki','nowe'],
+          tags: ['nowe'],
           topic: "Dodanie nowego wariantu",
           nickname: "Bóbr",
         },
         {
           id: "derv1ws0",
-          tags: ['smoki','nowe'],
+          tags: ['wyprawy'],
           topic: "Wipe bety",
           nickname: "Łoś",
         },

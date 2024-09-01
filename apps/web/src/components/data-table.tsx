@@ -9,6 +9,7 @@ import {
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type Row,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -61,6 +62,17 @@ type ColumnProps = {
   nickname: string
   tags: string[]
 }
+
+const multiStringFilterFn = (row: Row<ColumnProps>, columnId: string, filterValue: string[]): boolean => {
+
+  if (!Array.isArray(filterValue) || filterValue.length === 0) {
+    return true; 
+  }
+
+  const cellValue = row.getValue<string[]>(columnId);
+  return filterValue.some(value => cellValue.includes(value));
+};
+
 
 export const columns: ColumnDef<ColumnProps>[] = [
   {
@@ -121,6 +133,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
   {
     accessorKey: "tags",
     header: () => <div>Tags</div>,
+    filterFn: multiStringFilterFn, 
     cell: ({ row }) => {
       const tags = row.getValue("tags")
 
@@ -193,6 +206,13 @@ export function DataTable()  {
 
   const [valueMultiSelect,setValueMultiSelect ] = React.useState<string[]>([])
 
+  const handleMultiSelect = (value: string[]) => {
+    setValueMultiSelect(value)
+    console.log(value)
+    //table.getColumn("tags")?.setFilterValue(value)
+    setColumnFilters([{ id: 'tags', value }]);
+  }
+
   return (
 
     
@@ -207,15 +227,15 @@ export function DataTable()  {
           className="max-w-sm"
         />
         
-        <MultiSelector values={valueMultiSelect} onValuesChange={setValueMultiSelect} loop className="max-w-xs ml-4 ">
+        <MultiSelector values={valueMultiSelect} onValuesChange={handleMultiSelect} loop className="max-w-xs ml-4 ">
           <MultiSelectorTrigger>
             <MultiSelectorInput placeholder="Wybierz tagi" />
           </MultiSelectorTrigger>
         <MultiSelectorContent>
           <MultiSelectorList className="z-10 text-white bg-slate-950" >
-            <MultiSelectorItem value={"Smoki"} className="z-50">Smoki</MultiSelectorItem>
-            <MultiSelectorItem value={"Wyprawy"}>Wyprawy</MultiSelectorItem>
-            <MultiSelectorItem value={"Nowe"}>Nowe</MultiSelectorItem>
+            <MultiSelectorItem value={"smoki"} className="z-50">Smoki</MultiSelectorItem>
+            <MultiSelectorItem value={"wyprawy"}>Wyprawy</MultiSelectorItem>
+            <MultiSelectorItem value={"nowe"}>Nowe</MultiSelectorItem>
           </MultiSelectorList>
         </MultiSelectorContent>
       </MultiSelector>
@@ -249,7 +269,7 @@ export function DataTable()  {
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-slate-950">
+          <TableHeader className="bg-slate-950 ">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -267,7 +287,7 @@ export function DataTable()  {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="bg-gray-950">
+          <TableBody className="bg-gray-950 ">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
