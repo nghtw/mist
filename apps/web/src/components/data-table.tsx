@@ -35,8 +35,8 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+ // DropdownMenuLabel,
+ // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import { Input } from "./ui/input"
@@ -51,18 +51,18 @@ import {
 
 import { useEffect } from "react";
 import { getTopics } from "~/server/actions/get-topics";
-import { set } from "zod";
+//import { set } from "zod";
 
 
 
-export type Payment = {
+type ColumnProps = {
   id: string
   topic: string
   nickname: string
   tags: string[]
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<ColumnProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -87,10 +87,21 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "topic",
-    header: "Topic",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Temat
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("topic")}</div>
     ),
+    enableSorting: true,
   },
   {
     accessorKey: "nickname",
@@ -112,9 +123,6 @@ export const columns: ColumnDef<Payment>[] = [
     header: () => <div>Tags</div>,
     cell: ({ row }) => {
       const tags = row.getValue("tags")
-
-      // Format the amount as a dollar amount
-
 
       return <div className="text-right font-medium flex">{(tags as string[]).map((e)=>{return (<div key={e} className="mx-1 p-1 bg-slate-800 rounded-md">{e}</div>)})}</div>
     },
@@ -154,7 +162,7 @@ export function DataTable()  {
   }, []);
 
 
-  const [data, setData] = React.useState<Payment[]>([])
+  const [data, setData] = React.useState<ColumnProps[]>([])
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
