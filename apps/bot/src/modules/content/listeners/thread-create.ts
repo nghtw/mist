@@ -24,7 +24,7 @@ export class BoardsThreadFetchListener extends Listener {
 
   async run() {
     console.log('Listener uruchomiony: ready event');
-    const channelId = '';
+    const channelId = '1244377740044402819';
     try {
       const channel = await this.container.client.channels.fetch(channelId);
 
@@ -88,7 +88,7 @@ export class BoardsThreadFetchListener extends Listener {
             const messages = await thread.messages.fetch();
             console.log(`Liczba wiadomości w wątku "${thread.name}": ${messages.size}`);
             for (const message of messages.values()) {
-              console.log(`Wiadomość: ${message.content}`);
+              console.log(`Wiadomość: ${message.content} author: ${message.author.username}`);
             }
           } catch (error) {
             console.error(`Błąd podczas pobierania wiadomości z wątku "${thread.name}":`, error);
