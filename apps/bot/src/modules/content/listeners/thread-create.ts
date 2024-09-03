@@ -24,7 +24,7 @@ export class BoardsThreadFetchListener extends Listener {
 
   async run() {
     console.log('Listener uruchomiony: ready event');
-    const channelId = '1244377740044402819';
+    const channelId = '';
     try {
       const channel = await this.container.client.channels.fetch(channelId);
 
