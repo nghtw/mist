@@ -57,10 +57,11 @@ import { getTopics } from "~/server/actions/get-topics";
 
 
 type ColumnProps = {
-  id: string
-  topic: string
-  nickname: string
-  tags: string[]
+  id: bigint
+  content: string
+  author: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 const multiStringFilterFn = (row: Row<ColumnProps>, columnId: string, filterValue: string[]): boolean => {
@@ -98,7 +99,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "topic",
+    accessorKey: "content",
     header: ({ column }) => {
       return (
         <Button
@@ -111,12 +112,12 @@ export const columns: ColumnDef<ColumnProps>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("topic")}</div>
+      <div className="capitalize">{row.getValue("content")}</div>
     ),
     enableSorting: true,
   },
   {
-    accessorKey: "nickname",
+    accessorKey: "author",
     header: ({ column }) => {
       return (
         <Button
@@ -128,7 +129,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("nickname")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("author")}</div>,
   },
   {
     accessorKey: "tags",
@@ -136,7 +137,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
     filterFn: multiStringFilterFn, 
     cell: ({ row }) => {
       const tags = row.getValue("tags")
-
+      if(!tags){return <div></div>}
       return <div className="text-right font-medium flex">{(tags as string[]).map((e)=>{return (<div key={e} className="mx-1 p-1 bg-slate-800 rounded-md">{e}</div>)})}</div>
     },
   },
@@ -220,9 +221,9 @@ export function DataTable()  {
       <div className="flex items-center py-4">
         <Input
           placeholder="Wyszukaj"
-          value={(table.getColumn("topic")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("content")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("topic")?.setFilterValue(event.target.value)
+            table.getColumn("content")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -5,11 +5,16 @@ import {
   type ThreadChannel,
   Collection,
   ChannelType,
-  type FetchedThreads, 
+  type FetchedThreads,
+  // type AnyThreadChannel, 
 } from "discord.js";
+import { getChannelWithEnabledContentFetching } from "../functions/config.js";
+//import { getThreadAuthorUsername } from "../functions/getThreadAuthorUsername.js";
+import { upsertThread } from "../functions/upsertThread.js";
+import { upsertComment } from "../functions/upsertComment.js";
 // import { assert } from "../../../utils/assert.js";
 
-// pole bitwy
+
 
 export class BoardsThreadFetchListener extends Listener {
   public constructor(
@@ -23,10 +28,18 @@ export class BoardsThreadFetchListener extends Listener {
   }
 
   async run() {
-    console.log('Listener uruchomiony: ready event');
-    const channelId = '';
+
+    const result = await getChannelWithEnabledContentFetching();
+
+    if (!result) {
+      console.error("Nie znaleziono konfiguracji kanału.");
+      return;
+    }
+
+   
+ 
     try {
-      const channel = await this.container.client.channels.fetch(channelId);
+      const channel = await this.container.client.channels.fetch(`${result.channelId}`);
 
       if (!channel) {
         console.error("Nie znaleziono kanału.");
@@ -82,13 +95,17 @@ export class BoardsThreadFetchListener extends Listener {
         }
 
         for (const thread of allThreads.values()) {
-          console.log(`Wątek: ${thread.name}`);
+          console.log(`Wątek: ${thread}`);
+          
+
+           await upsertThread(thread);
 
           try {
             const messages = await thread.messages.fetch();
             console.log(`Liczba wiadomości w wątku "${thread.name}": ${messages.size}`);
             for (const message of messages.values()) {
               console.log(`Wiadomość: ${message.content} author: ${message.author.username}`);
+              await upsertComment(message,thread);
             }
           } catch (error) {
             console.error(`Błąd podczas pobierania wiadomości z wątku "${thread.name}":`, error);

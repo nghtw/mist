@@ -32,6 +32,7 @@ model BoardTagConfig {
   channel       BoardChannelConfig @relation(fields: [channelId], references: [channelId])
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @default(now()) @updatedAt
+
 }
 
 model Guild {
@@ -40,6 +41,7 @@ model Guild {
   ticketConfig        TicketConfig[]
   boardChannelsConfig BoardChannelConfig[]
   managedRolesConfig  ManagedRoleConfig[]
+  contentChannelConfig ContentChannelConfig[]
 }
 
 model ManagedRoleConfig {
@@ -75,18 +77,35 @@ model TicketConfig {
 }
 
 
+model ContentChannelConfig {
+  channelId                  BigInt           @id
+  guildId                    BigInt
+  guild                      Guild            @relation(fields: [guildId], references: [id])
+  enabled                    Boolean          @default(false)
+  createdAt                  DateTime         @default(now())
+  updatedAt                  DateTime         @default(now()) @updatedAt
+}
+
 
 model ContentThreads {
-  id        Int      @id @default(autoincrement())
-  title     String
+  id        BigInt      @id @default(autoincrement())
   content   String
+  author    String
+  commentId ContentComments[]
   createdAt DateTime @default(now())
-  //updatedAt DateTime @default(now()) @updatedAt
+  updatedAt DateTime @default(now())
+
+
 }
 
 model ContentComments{
-  id        Int      @id @default(autoincrement())
+  id        BigInt      @id @default(autoincrement())
+  threadId  BigInt
   content   String
+  author    String
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  ContentThreads ContentThreads @relation(fields: [threadId], references: [id])
   //updatedAt DateTime @default(now()) @updatedAt
 }
