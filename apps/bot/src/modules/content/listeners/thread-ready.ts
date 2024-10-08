@@ -6,6 +6,7 @@ import {
   Collection,
   ChannelType,
   type FetchedThreads,
+  type ForumChannel,
   // type AnyThreadChannel, 
 } from "discord.js";
 import { getChannelWithEnabledContentFetching } from "../functions/config.js";
@@ -57,6 +58,19 @@ export class BoardsThreadFetchListener extends Listener {
       ) {
         console.log('Kanał jest poprawnym typem do pobierania wątków.');
 
+
+        const forumChannel = channel as ForumChannel; 
+        const tags = forumChannel.availableTags;
+
+        if (tags.length > 0) {
+          for (const tag of tags) {
+            console.log(`Tag: ${tag.name}, Emoji: ${tag.emoji ? tag.emoji.name : 'Brak emoji'} ${tag.id}`);
+          }
+        } else {
+          console.log('Brak dostępnych tagów w tym kanale.');
+        }
+
+
         let activeThreads: FetchedThreads | null = null;  
         let archivedThreads: FetchedThreads | null = null;  
         
@@ -98,6 +112,10 @@ export class BoardsThreadFetchListener extends Listener {
 
         for (const thread of allThreads.values()) {
           console.log(`Wątek: ${thread}`);
+
+          if (thread.appliedTags) {
+            console.log(`Tagi wątku: ${thread.appliedTags}`);
+          }
           
 
            await upsertThread(thread);
