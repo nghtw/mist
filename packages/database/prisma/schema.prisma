@@ -105,7 +105,23 @@ model ContentComments{
   author    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  ContentCommentReactions ContentCommentReactions[]
   
   ContentThreads ContentThreads @relation(fields: [threadId], references: [id])
   //updatedAt DateTime @default(now()) @updatedAt
+
+  
+}
+
+
+model ContentCommentReactions {
+  commentId   BigInt
+  emoji       String
+  userId      BigInt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now()) @updatedAt
+
+  comment     ContentComments @relation(fields: [commentId], references: [id])
+
+  @@id([commentId, emoji, userId])
 }

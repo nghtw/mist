@@ -12,6 +12,8 @@ import { getChannelWithEnabledContentFetching } from "../functions/config.js";
 //import { getThreadAuthorUsername } from "../functions/getThreadAuthorUsername.js";
 import { upsertThread } from "../functions/upsertThread.js";
 import { upsertComment } from "../functions/upsertComment.js";
+import { deleteAllReactions } from "../functions/deleteAllReactions.js";
+import { upsertReaction } from "../functions/upsertReactions.js";
 // import { assert } from "../../../utils/assert.js";
 
 
@@ -23,7 +25,7 @@ export class BoardsThreadFetchListener extends Listener {
   ) {
     super(context, {
       ...options,
-      event: "ready", 
+      event: 'ready', 
     });
   }
 
@@ -106,6 +108,20 @@ export class BoardsThreadFetchListener extends Listener {
             for (const message of messages.values()) {
               console.log(`Wiadomość: ${message.content} author: ${message.author.username}`);
               await upsertComment(message,thread);
+
+              // aktualizacja wszystkich reakcji
+
+              await deleteAllReactions(message);
+              const reactions = message.reactions.cache;
+
+              for (const reaction of reactions.values()) {
+                const users = await reaction.users.fetch();
+                for (const user of users.values()) {
+                  await upsertReaction(reaction, user, thread, 'add');
+                }
+              }
+
+              
             }
           } catch (error) {
             console.error(`Błąd podczas pobierania wiadomości z wątku "${thread.name}":`, error);
