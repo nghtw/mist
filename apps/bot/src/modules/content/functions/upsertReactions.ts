@@ -1,4 +1,3 @@
-// upsertReaction.ts
 import { container } from '@sapphire/pieces';
 import type { MessageReaction, User, ThreadChannel } from 'discord.js';
 
@@ -12,7 +11,7 @@ export async function upsertReaction(
   const emoji = reaction.emoji.identifier; 
 
   if (!emoji) {
-    console.error('Nie udało się uzyskać identyfikatora emotikony.');
+    console.error('Nie udało się uzyskać identyfikatora emoji.');
     return;
   }
 

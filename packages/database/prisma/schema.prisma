@@ -84,6 +84,8 @@ model ContentChannelConfig {
   enabled                    Boolean          @default(false)
   createdAt                  DateTime         @default(now())
   updatedAt                  DateTime         @default(now()) @updatedAt
+
+  tags             ContentTag[] // Relacja z tagami
 }
 
 
@@ -95,7 +97,7 @@ model ContentThreads {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-
+  tags      ThreadTag[]       // Relacja N:N z tagami
 }
 
 model ContentComments{
@@ -124,4 +126,28 @@ model ContentCommentReactions {
   comment     ContentComments @relation(fields: [commentId], references: [id])
 
   @@id([commentId, emoji, userId])
+}
+
+model ContentTag {
+  id        String              @id 
+  channelId BigInt
+  name      String
+  emoji     String?             
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @default(now()) @updatedAt
+
+  channel   ContentChannelConfig @relation(fields: [channelId], references: [channelId])
+  threads   ThreadTag[]         
+
+  @@unique([channelId, id]) 
+}
+
+model ThreadTag {
+  threadId BigInt
+  tagId    String
+
+  thread   ContentThreads @relation(fields: [threadId], references: [id])
+  tag      ContentTag     @relation(fields: [tagId], references: [id])
+
+  @@id([threadId, tagId])
 }

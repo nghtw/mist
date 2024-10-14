@@ -1,6 +1,6 @@
 import { container } from "@sapphire/pieces";
 import type { Message, ThreadChannel } from "discord.js";
-import { getThreadAuthorUsername } from "./getThreadAuthorUsername.js";
+//import { getThreadAuthorUsername } from "./getThreadAuthorUsername.js";
 
 export async function upsertComment(message: Message, thread: ThreadChannel) {
 
@@ -23,7 +23,7 @@ export async function upsertComment(message: Message, thread: ThreadChannel) {
         threadId: BigInt(thread.id),
         content: message.content,
         author,
-        createdAt: new Date(),
+        createdAt: thread.createdAt ?? new Date(),
         updatedAt: new Date(),
       },
     });

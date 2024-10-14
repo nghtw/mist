@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -50,29 +50,61 @@ import {
   TableRow,
 } from "./ui/table"
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getTopics } from "~/server/actions/get-topics";
+import { getTags } from "~/server/actions/get-tags";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog"
+import Thread from "./thread";
 //import { set } from "zod";
 
-
-
-type ColumnProps = {
-  id: bigint
-  content: string
-  author: string
-  createdAt: Date
-  updatedAt: Date
+interface tagsProps {
+  id: bigint;
+  name: string;
+  emoji: string | null;
 }
 
-const multiStringFilterFn = (row: Row<ColumnProps>, columnId: string, filterValue: string[]): boolean => {
+type ColumnProps = {
+  id: bigint;
+  content: string;
+  author: string;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: { name: string; emoji: string | null }[]; // Updated to allow null
+};
 
+
+const multiStringFilterFn = (
+  row: Row<ColumnProps>,
+  columnId: string,
+  filterValue: string[]
+): boolean => {
   if (!Array.isArray(filterValue) || filterValue.length === 0) {
-    return true; 
+    return true;
   }
 
-  const cellValue = row.getValue<string[]>(columnId);
-  return filterValue.some(value => cellValue.includes(value));
+  const tags = row.getValue<{ name: string; emoji: string }[]>(columnId);
+
+  if (!tags || !Array.isArray(tags)) {
+    return false;
+  }
+
+  const cellValues = tags.map((tag: { name: string; emoji: string }) => tag.name.toLowerCase());
+
+  console.log('cell values', cellValues);
+  console.log('filter values', filterValue);
+
+  // Sprawdź, czy wszystkie wybrane wartości znajdują się w tagach wiersza
+  return filterValue.every(value => cellValues.includes(value.toLowerCase()));
 };
+
 
 
 export const columns: ColumnDef<ColumnProps>[] = [
@@ -136,9 +168,19 @@ export const columns: ColumnDef<ColumnProps>[] = [
     header: () => <div>Tags</div>,
     filterFn: multiStringFilterFn, 
     cell: ({ row }) => {
-      const tags = row.getValue("tags")
-      if(!tags){return <div></div>}
-      return <div className="text-right font-medium flex">{(tags as string[]).map((e)=>{return (<div key={e} className="mx-1 p-1 bg-slate-800 rounded-md">{e}</div>)})}</div>
+      const tags = row.getValue("tags") satisfies tagsProps[];
+      if (!tags) {
+        return <div></div>;
+      }
+      return (
+        <div className="text-right font-medium flex">
+          {tags.map((tag) => (
+            <div key={tag.name} className="mx-1 p-1 bg-slate-800 rounded-md">
+              {tag.emoji} {tag.name}
+            </div>
+          ))}
+        </div>
+      );
     },
   },
   {
@@ -163,28 +205,70 @@ export const columns: ColumnDef<ColumnProps>[] = [
       )
     },
   },
+  {
+    id: "open",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      console.log('ttid', id);
+
+      return (
+        <Dialog>
+          <DialogTrigger>
+            <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
+              Otwórz
+            </Button>
+          </DialogTrigger>
+        <DialogContent>
+          <Thread id={id} />
+        </DialogContent>
+      </Dialog>
+      )
+    },
+  },
 ]
 
 export function DataTable()  {
 
   useEffect(() => {
-    void (async () => {
-      const res = await getTopics(null);
-      if(!res?.data){return;}
-      setData(res?.data);
-  })();
+    (async () => {
+      const res = await getTopics();
+      if (!res || !res.data) return;
+      setData(res.data);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getTags();
+      if (!res || !res.data) return;
+  
+      try {
+        const processedTags: tagsProps[] = res.data.map(tag => ({
+          id: BigInt(tag.id), 
+          name: tag.name,
+          emoji: tag.emoji ?? '', 
+        }));
+  
+        setTags(processedTags);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   }, []);
 
 
-  const [data, setData] = React.useState<ColumnProps[]>([])
 
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+
+  const [data, setData] = useState<ColumnProps[]>([])
+  const [tags, setTags] = useState<tagsProps[]>([])
+
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
     data,
@@ -205,7 +289,7 @@ export function DataTable()  {
     },
   })
 
-  const [valueMultiSelect,setValueMultiSelect ] = React.useState<string[]>([])
+  const [valueMultiSelect,setValueMultiSelect ] = useState<string[]>([])
 
   const handleMultiSelect = (value: string[]) => {
     setValueMultiSelect(value)
@@ -234,9 +318,11 @@ export function DataTable()  {
           </MultiSelectorTrigger>
         <MultiSelectorContent>
           <MultiSelectorList className="z-10 text-white bg-slate-950" >
-            <MultiSelectorItem value={"smoki"} className="z-50">Smoki</MultiSelectorItem>
-            <MultiSelectorItem value={"wyprawy"}>Wyprawy</MultiSelectorItem>
-            <MultiSelectorItem value={"nowe"}>Nowe</MultiSelectorItem>
+           {tags.map((tag)=>{
+            return (
+              <MultiSelectorItem value={tag.name}>{tag.emoji ?? '❓'}{tag.name}</MultiSelectorItem>
+            )
+           })}
           </MultiSelectorList>
         </MultiSelectorContent>
       </MultiSelector>

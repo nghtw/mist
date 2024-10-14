@@ -15,6 +15,10 @@ import { upsertThread } from "../functions/upsertThread.js";
 import { upsertComment } from "../functions/upsertComment.js";
 import { deleteAllReactions } from "../functions/deleteAllReactions.js";
 import { upsertReaction } from "../functions/upsertReactions.js";
+import { assert } from "../../../utils/assert.js";
+import { upsertTag } from "../functions/upsertTag.js";
+import { deleteAllThreadTags } from "../functions/deleteAllThreadTags.js";
+import { upsertTagsForThread } from "../functions/upsertTagsForThread.js";
 // import { assert } from "../../../utils/assert.js";
 
 
@@ -34,22 +38,15 @@ export class BoardsThreadFetchListener extends Listener {
 
     const result = await getChannelWithEnabledContentFetching();
 
-    if (!result) {
-      console.error("Nie znaleziono konfiguracji kanału.");
-      return;
-    }
+    assert(result, "Nie znaleziono konfiguracji kanału.");
 
-   
  
     try {
       const channel = await this.container.client.channels.fetch(`${result.channelId}`);
 
-      if (!channel) {
-        console.error("Nie znaleziono kanału.");
-        return;
-      }
+      assert(channel, "Nie znaleziono kanału.");
 
-      console.log(`Pobrany kanał: ${channel.id}, typ: ${channel.type}`);
+      //console.log(`Pobrany kanał: ${channel.id}, typ: ${channel.type}`);
 
       if (
         channel instanceof TextChannel ||
@@ -65,28 +62,26 @@ export class BoardsThreadFetchListener extends Listener {
         if (tags.length > 0) {
           for (const tag of tags) {
             console.log(`Tag: ${tag.name}, Emoji: ${tag.emoji ? tag.emoji.name : 'Brak emoji'} ${tag.id}`);
+            await upsertTag({ tag, channelId: BigInt(result.channelId) });
           }
-        } else {
-          console.log('Brak dostępnych tagów w tym kanale.');
-        }
+        } 
 
 
         let activeThreads: FetchedThreads | null = null;  
         let archivedThreads: FetchedThreads | null = null;  
         
-        try {
-          activeThreads = await channel.threads.fetchActive();
-          console.log(`Znaleziono aktywne wątki: ${activeThreads.threads.size}`);
-        } catch (error) {
-          console.error("Błąd podczas pobierania aktywnych wątków:", error);
-        }
+       
+        activeThreads = await channel.threads.fetchActive();
+        console.log(`Znaleziono aktywne wątki: ${activeThreads.threads.size}`);
 
-        try {
+        assert(activeThreads, "Błąd podczas pobierania aktywnych wątków.");
+      
+
+        
           archivedThreads = await channel.threads.fetchArchived();
           console.log(`Znaleziono zarchiwizowane wątki: ${archivedThreads.threads.size}`);
-        } catch (error) {
-          console.error("Błąd podczas pobierania zarchiwizowanych wątków:", error);
-        }
+      
+          assert(archivedThreads, "Błąd podczas pobierania zarchiwizowanych wątków.");
 
         
         const allThreads = new Collection<string, ThreadChannel>();
@@ -105,13 +100,13 @@ export class BoardsThreadFetchListener extends Listener {
 
         console.log(`Łączna liczba wątków: ${allThreads.size}`);
 
-        if (allThreads.size === 0) {
-          console.log("Nie znaleziono wątków w kanale.");
-          return;
-        }
+
+        assert(allThreads.size > 0, "Nie znaleziono wątków w kanale.");
+
+        // iterowanie po istniejących wątkach, nawet tych zarchiwizowanych
 
         for (const thread of allThreads.values()) {
-          console.log(`Wątek: ${thread}`);
+          //console.log(`Wątek: ${thread}`);
 
           if (thread.appliedTags) {
             console.log(`Tagi wątku: ${thread.appliedTags}`);
@@ -120,9 +115,24 @@ export class BoardsThreadFetchListener extends Listener {
 
            await upsertThread(thread);
 
-          try {
+                // Zarządzanie tagami wątku
+                const appliedTagIds = thread.appliedTags || [];
+
+          // Usunięcie wszystkich tagów dla wątku
+          await deleteAllThreadTags(BigInt(thread.id));
+
+          //  Przypisanie nowych tagów
+          await upsertTagsForThread({
+            threadId: BigInt(thread.id),
+            tagIds: appliedTagIds,
+          });
+
+          
             const messages = await thread.messages.fetch();
-            console.log(`Liczba wiadomości w wątku "${thread.name}": ${messages.size}`);
+            //console.log(`Liczba wiadomości w wątku "${thread.name}": ${messages.size}`);
+            //assert(messages.size > 0, "Brak wiadomości w wątku.");
+
+
             for (const message of messages.values()) {
               console.log(`Wiadomość: ${message.content} author: ${message.author.username}`);
               await upsertComment(message,thread);
@@ -134,6 +144,7 @@ export class BoardsThreadFetchListener extends Listener {
 
               for (const reaction of reactions.values()) {
                 const users = await reaction.users.fetch();
+                
                 for (const user of users.values()) {
                   await upsertReaction(reaction, user, thread, 'add');
                 }
@@ -141,9 +152,7 @@ export class BoardsThreadFetchListener extends Listener {
 
               
             }
-          } catch (error) {
-            console.error(`Błąd podczas pobierania wiadomości z wątku "${thread.name}":`, error);
-          }
+
         }
       } else {
         console.error("Kanał nie jest typu TextChannel, NewsChannel, GuildForum lub nie obsługuje wątków.");
