@@ -8,6 +8,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                 String          @id @default(cuid())
+  sessions           Session[]
+  username           String?         @unique
+  registerAt         DateTime        @default(now())
+  image              String?
+  password_hash      String?
+}
+
+model Session {
+  id        String @id
+  userId    String
+  expiresAt DateTime
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model BoardChannelConfig {
   channelId                  BigInt           @id
   guildId                    BigInt

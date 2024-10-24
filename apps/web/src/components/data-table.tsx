@@ -57,9 +57,9 @@ import { getTags } from "~/server/actions/get-tags";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+ // DialogDescription,
+ // DialogHeader,
+ // DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
 import Thread from "./thread";
@@ -186,7 +186,9 @@ export const columns: ColumnDef<ColumnProps>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({ 
+      //row
+     }) => {
       //const payment = row.original
 
       return (
