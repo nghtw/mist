@@ -64,7 +64,7 @@ function Thread({id}:{id:bigint}) {
                 <TooltipProvider>
                   {comment.ContentCommentReactions.map((reaction, index) => (
                     <Tooltip key={index}>
-                      <TooltipTrigger>
+                      <TooltipTrigger asChild>
                         <span className="text-lg bg-gray-100 rounded-full px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
                           {decodeURIComponent(reaction.emoji)}
                         </span>

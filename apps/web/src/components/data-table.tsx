@@ -215,7 +215,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
 
       return (
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
               Otwórz
             </Button>
