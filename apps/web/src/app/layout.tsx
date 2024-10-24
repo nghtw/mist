@@ -2,8 +2,8 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import Header from "./header";
-import { validateRequest } from "~/lib/validate-session";
 import { SessionProvider } from "~/components/providers/session-provider";
+import { getCurrentSession } from "~/lib/session";
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -12,7 +12,9 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 
 
-  const { session, user } = await validateRequest();
+  const { session, user } = await getCurrentSession();
+
+  console.log('user', user);
 
 
   return (
