@@ -3,7 +3,7 @@ import {  useEffect, useState } from 'react'
 import { getThreadComments } from '~/server/actions/get-comments'
 
 
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
+import { Avatar, AvatarFallback } from "../components/ui/avatar"
 import { ScrollArea } from "../components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip"
 import { formatDistanceToNow } from 'date-fns'
@@ -20,7 +20,7 @@ function Thread({id}:{id:bigint}) {
     }
 
     interface CommentReaction {
-        emoji: string; // pokaz tylko emoji, reszta jest nie istotna
+        emoji: string; // w uzytku 
         userId: bigint;
         createdAt: Date;
         updatedAt: Date;
@@ -35,9 +35,9 @@ function Thread({id}:{id:bigint}) {
       }
 
     useEffect(() => {
-        (async () => {
+        void (async () => {
           const res = await getThreadComments({ threadId: id.toString() });
-          if (!res || !res.data) return;
+          if (!res?.data) return;
           setData(res.data);
           console.log(res.data)
         })();

@@ -232,17 +232,17 @@ export const columns: ColumnDef<ColumnProps>[] = [
 export function DataTable()  {
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const res = await getTopics();
-      if (!res || !res.data) return;
+      if (!res?.data) return;
       setData(res.data);
     })();
   }, []);
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const res = await getTags();
-      if (!res || !res.data) return;
+      if (!res?.data) return;
   
       try {
         const processedTags: tagsProps[] = res.data.map(tag => ({
@@ -320,7 +320,7 @@ export function DataTable()  {
           <MultiSelectorList className="z-10 text-white bg-slate-950" >
            {tags.map((tag)=>{
             return (
-              <MultiSelectorItem value={tag.name}>{tag.emoji ?? '❓'}{tag.name}</MultiSelectorItem>
+              <MultiSelectorItem key={tag.id} value={tag.name}>{tag.emoji ?? '❓'}{tag.name}</MultiSelectorItem>
             )
            })}
           </MultiSelectorList>
