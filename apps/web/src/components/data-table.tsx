@@ -77,7 +77,7 @@ type ColumnProps = {
   author: string;
   createdAt: Date;
   updatedAt: Date;
-  tags: { name: string; emoji: string | null }[]; // Updated to allow null
+  tags: { name: string; emoji: string | null }[];
 };
 
 
@@ -101,7 +101,7 @@ const multiStringFilterFn = (
   console.log('cell values', cellValues);
   console.log('filter values', filterValue);
 
-  // Sprawdź, czy wszystkie wybrane wartości znajdują się w tagach wiersza
+  
   return filterValue.every(value => cellValues.includes(value.toLowerCase()));
 };
 
@@ -191,6 +191,10 @@ export const columns: ColumnDef<ColumnProps>[] = [
      }) => {
       //const payment = row.original
 
+      //TODO tutaj można dodać czynności związane z tematami: zamknięcie, otworzenie, zmiania tagu itp.
+      
+      return (null);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -216,10 +220,26 @@ export const columns: ColumnDef<ColumnProps>[] = [
       console.log('ttid', id);
 
       return (
+        <div className="gap-x-4 flex">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
+                Otwórz
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{content}</DialogTitle>
+                <DialogDescription>
+                  <Thread id={id} />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+        </Dialog>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
-              Otwórz
+            <Button className="bg-purple-800 hover:bg-purple-700 active:bg-purple-600">
+              Notatka
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -231,9 +251,12 @@ export const columns: ColumnDef<ColumnProps>[] = [
             </DialogHeader>
           </DialogContent>
       </Dialog>
+      </div>
+      
       )
     },
   },
+  
 ]
 
 export function DataTable()  {

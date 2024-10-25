@@ -23,7 +23,7 @@ export async function upsertComment(message: Message, thread: ThreadChannel) {
         threadId: BigInt(thread.id),
         content: message.content,
         author,
-        createdAt: thread.createdAt ?? new Date(),
+        createdAt: message.createdAt ?? new Date(),
         updatedAt: new Date(),
       },
     });
