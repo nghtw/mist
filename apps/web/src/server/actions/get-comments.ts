@@ -31,7 +31,7 @@ export const getThreadComments = actionClient
   const { session, user } = await getCurrentSession();
 
   if(!user || user?.role !== Role.ADMIN || !session) {
-    return 'Unauthorized';
+    return null;
   }
 
     const { threadId } = parsedInput;

@@ -10,7 +10,7 @@ export const destroySession = actionClient.action(async () => {
     const { session, user } = await getCurrentSession();
 
     if(!user || !session) {
-      return 'Unauthorized';
+      return null;
     }
 
     await invalidateUserSessions(user.id);

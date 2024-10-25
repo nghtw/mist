@@ -12,7 +12,7 @@ export const getTopics = actionClient.action(async () => {
   const { session, user } = await getCurrentSession();
 
   if(!user || user?.role !== Role.ADMIN || !session) {
-    return 'Unauthorized';
+    return null;
   }
 
   console.log('user', user);  

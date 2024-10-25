@@ -11,7 +11,7 @@ export const getTags = actionClient.action(async () => {
     const { session, user } = await getCurrentSession();
 
     if(!user || user?.role !== Role.ADMIN || !session) {
-      return 'Unauthorized';
+      return null;
     }
 
 
