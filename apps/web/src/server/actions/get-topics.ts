@@ -1,9 +1,22 @@
 "use server";
 
+import { getCurrentSession } from "~/lib/session";
 import { actionClient } from "../../lib/safe-action";
 import { db } from "../db";
+import { Role } from "@mist/database";
 
 export const getTopics = actionClient.action(async () => {
+
+
+  //TODO move auth to middleware in safe actions
+  const { session, user } = await getCurrentSession();
+
+  if(!user || user?.role !== Role.ADMIN || !session) {
+    return 'Unauthorized';
+  }
+
+  console.log('user', user);  
+
   const threads = await db.contentThreads.findMany({
     select: {
       id: true,

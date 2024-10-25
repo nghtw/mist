@@ -61,7 +61,7 @@ export async function GET(request: Request): Promise<Response> {
 		const sessionToken = generateSessionToken();
 
         console.log("sessionToken", sessionToken);
-		const session = createSession(sessionToken, existingUser.id);
+		const session = await createSession(sessionToken, existingUser.id);
 
         console.log("session", session);
 		await setSessionTokenCookie(sessionToken, session.expiresAt);

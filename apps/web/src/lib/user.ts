@@ -1,3 +1,4 @@
+import type { Role } from "@mist/database";
 import { db } from "~/server/db";
 
 export async function createUser(githubId: number, email: string, username: string): Promise<User> {
@@ -38,4 +39,5 @@ export interface User {
 	email: string;
 	githubId: number;
 	username: string;
+  role: Role;
 }

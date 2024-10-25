@@ -4,6 +4,8 @@
 import { z } from "zod";
 import { actionClient } from "../../lib/safe-action";
 import { db } from "../db";
+import { getCurrentSession } from "~/lib/session";
+import { Role } from "@mist/database";
 
 
 const getThreadCommentsSchema = z.object({
@@ -23,6 +25,15 @@ const getThreadCommentsSchema = z.object({
 export const getThreadComments = actionClient
   .schema(getThreadCommentsSchema)
   .action(async ({ parsedInput }) => {
+
+
+  //TODO move auth to middleware in safe actions
+  const { session, user } = await getCurrentSession();
+
+  if(!user || user?.role !== Role.ADMIN || !session) {
+    return 'Unauthorized';
+  }
+
     const { threadId } = parsedInput;
     const threadIdBigInt = BigInt(threadId); 
 

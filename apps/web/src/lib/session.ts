@@ -26,9 +26,10 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 
     const user: User = {
         id: sessionData.user.id,
-        githubId: sessionData.user.githubId as number,  
-        email: sessionData.user.email as string || '' ,
-        username: sessionData.user.username ?? ''
+        githubId: sessionData.user.githubId,  
+        email: sessionData.user.email || '' ,
+        username: sessionData.user.username ?? '',
+        role: sessionData.user.role,
     };
 
     if (Date.now() >= session.expiresAt.getTime()) {
