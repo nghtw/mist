@@ -57,9 +57,9 @@ import { getTags } from "~/server/actions/get-tags";
 import {
   Dialog,
   DialogContent,
- // DialogDescription,
- // DialogHeader,
- // DialogTitle,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
 import Thread from "./thread";
@@ -211,7 +211,7 @@ export const columns: ColumnDef<ColumnProps>[] = [
     id: "open",
     enableHiding: false,
     cell: ({ row }) => {
-      const id = row.original.id;
+      const { id, content } = row.original;
 
       console.log('ttid', id);
 
@@ -222,9 +222,14 @@ export const columns: ColumnDef<ColumnProps>[] = [
               Otwórz
             </Button>
           </DialogTrigger>
-        <DialogContent>
-          <Thread id={id} />
-        </DialogContent>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{content}</DialogTitle>
+              <DialogDescription>
+                <Thread id={id} />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
       </Dialog>
       )
     },
