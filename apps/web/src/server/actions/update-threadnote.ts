@@ -7,7 +7,7 @@ import { db } from "../db";
 import { getCurrentSession } from "~/lib/session";
 import { Role } from "@mist/database";
 
-const upsertThreadNoteSchema = z.object({
+const updateThreadNoteSchema = z.object({
   threadId: z.string().refine((val) => {
     try {
       BigInt(val);
@@ -21,8 +21,8 @@ const upsertThreadNoteSchema = z.object({
   content: z.string().min(1, { message: "Content nie może być pusty" }),
 });
 
-export const upsertThreadNote = actionClient
-  .schema(upsertThreadNoteSchema)
+export const updateThreadNote = actionClient
+  .schema(updateThreadNoteSchema)
   .action(async ({ parsedInput }) => {
     const { session, user } = await getCurrentSession();
 

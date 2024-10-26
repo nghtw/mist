@@ -63,7 +63,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog"
 import Thread from "./thread";
-import ThreadNotes from "./notes";
+import ThreadNote from "./notes";
 //import { set } from "zod";
 
 interface tagsProps {
@@ -109,168 +109,7 @@ const multiStringFilterFn = (
 
 
 
-export const columns: ColumnDef<ColumnProps>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "content",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Temat
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("content")}</div>
-    ),
-    enableSorting: true,
-  },
-  {
-    accessorKey: "author",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nickname
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("author")}</div>,
-  },
-  {
-    accessorKey: "tags",
-    header: () => <div>Tags</div>,
-    filterFn: multiStringFilterFn, 
-    cell: ({ row }) => {
-      const tags = row.getValue("tags") satisfies tagsProps[];
-      if (!tags) {
-        return <div></div>;
-      }
-      return (
-        <div className="text-right font-medium flex">
-          {tags.map((tag) => (
-            <div key={tag.name} className="mx-1 p-1 bg-slate-800 rounded-md">
-              {tag.emoji} {tag.name}
-            </div>
-          ))}
-        </div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ 
-      //row
-     }) => {
-      //const payment = row.original
-
-      //TODO tutaj można dodać czynności związane z tematami: zamknięcie, otworzenie, zmiania tagu itp.
-      
-      return (null);
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            
-            <DropdownMenuItem>Test option</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-  {
-    id: "open",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const { id, content } = row.original;
-
-      console.log('ttid', id);
-
-      return (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
-                Otwórz
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{content}</DialogTitle>
-                <DialogDescription>
-                  <Thread id={id} />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-        </Dialog>
-      )
-    },
-  },{
-    id: "note",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const { id, content, note } = row.original;
-
-      console.log('ttid', id);
-//  <ThreadNotes id={id} />
-      return (
-      <Dialog>
-          <DialogTrigger asChild>
-            <div className="w-40 cursor-pointer">
-            {note ? (note.length <= 100 ? note : note.slice(0, note.lastIndexOf(' ', 35)) + '...') : 
-            (
-              <Button className="text-white"> Dodaj notatkę +</Button>
-            )}
-            </div>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{content}</DialogTitle>
-              <DialogDescription>
-               
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-      </Dialog>
-      )
-    },
-  },
-  
-]
+ 
 
 export function DataTable()  {
 
@@ -302,7 +141,169 @@ export function DataTable()  {
   }, []);
 
 
-
+  const columns: ColumnDef<ColumnProps>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "content",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Temat
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("content")}</div>
+      ),
+      enableSorting: true,
+    },
+    {
+      accessorKey: "author",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Nickname
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("author")}</div>,
+    },
+    {
+      accessorKey: "tags",
+      header: () => <div>Tags</div>,
+      filterFn: multiStringFilterFn, 
+      cell: ({ row }) => {
+        const tags = row.getValue("tags") satisfies tagsProps[];
+        if (!tags) {
+          return <div></div>;
+        }
+        return (
+          <div className="text-right font-medium flex">
+            {tags.map((tag) => (
+              <div key={tag.name} className="mx-1 p-1 bg-slate-800 rounded-md">
+                {tag.emoji} {tag.name}
+              </div>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ 
+        //row
+       }) => {
+        //const payment = row.original
+  
+        //TODO tutaj można dodać czynności związane z tematami: zamknięcie, otworzenie, zmiania tagu itp.
+        
+        return (null);
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              
+              <DropdownMenuItem>Test option</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+    {
+      id: "open",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const { id, content } = row.original;
+  
+        console.log('ttid', id);
+  
+        return (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
+                  Otwórz
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{content}</DialogTitle>
+                  <DialogDescription>
+                    <Thread id={id} />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+          </Dialog>
+        )
+      },
+    },{
+      id: "note",
+      enableHiding: false,
+      cell: ({ row }) => {
+  
+        const { id, note } = row.original;
+  
+        console.log('ttid', id);
+  // 
+        return (
+        <Dialog>
+            <DialogTrigger asChild>
+              <div className="w-40 cursor-pointer">
+              {note ? (note.length <= 100 ? note : note.slice(0, note.lastIndexOf(' ', 35)) + '...') : 
+              (
+                <Button className="text-white"> Dodaj notatkę +</Button>
+              )}
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Notatka</DialogTitle>
+                <DialogDescription>
+                <ThreadNote id={id} note={note ?? ''} onNoteUpdate={handleNoteUpdate} />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+        </Dialog>
+        )
+      },
+    },
+    
+  ]
 
   const [data, setData] = useState<ColumnProps[]>([])
   const [tags, setTags] = useState<tagsProps[]>([])
@@ -312,6 +313,14 @@ export function DataTable()  {
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
+
+  const handleNoteUpdate = (id: bigint, newNote: string) => {
+    setData(prevData =>
+      prevData.map(item =>
+        item.id === id ? { ...item, note: newNote } : item
+      )
+    );
+  };
 
   const table = useReactTable({
     data,
@@ -340,6 +349,10 @@ export function DataTable()  {
     //table.getColumn("tags")?.setFilterValue(value)
     setColumnFilters([{ id: 'tags', value }]);
   }
+
+
+
+
 
   return (
 

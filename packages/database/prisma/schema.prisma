@@ -136,9 +136,9 @@ model ContentComments{
   
   ContentThreads ContentThreads @relation(fields: [threadId], references: [id])
   //updatedAt DateTime @default(now()) @updatedAt
-
-  
+   
 }
+
 
 
 model ContentCommentReactions {
