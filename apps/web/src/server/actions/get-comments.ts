@@ -54,6 +54,13 @@ export const getThreadComments = actionClient
             updatedAt: true,
           },
         },
+        ContentCommentAttachment:{
+          select: {
+           // id: true,
+            url: true,
+            filename: true,
+          }
+        }
       },
       orderBy: { createdAt: 'asc' }, 
     });

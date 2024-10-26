@@ -17,6 +17,7 @@ function Thread({id}:{id:bigint}) {
         updatedAt: Date;
         id: bigint;
         ContentCommentReactions: CommentReaction[];
+        ContentCommentAttachment: CommentAttachment[];
     }
 
     interface CommentReaction {
@@ -24,6 +25,11 @@ function Thread({id}:{id:bigint}) {
         userId: bigint;
         createdAt: Date;
         updatedAt: Date;
+    }
+
+    interface CommentAttachment {
+        url: string;
+        filename: string;
     }
 
 
@@ -59,6 +65,21 @@ function Thread({id}:{id:bigint}) {
               {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
             </p>
             <p className="text-sm">{comment.content}</p>
+            {comment.ContentCommentAttachment.length > 0 && (
+              <div>
+                {comment.ContentCommentAttachment.map((attachment, index) => (
+                  <a
+                    key={index}
+                    href={attachment.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    {attachment.filename}
+                  </a>
+                ))} 
+              </div>
+            )}
             {comment.ContentCommentReactions.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 <TooltipProvider>
