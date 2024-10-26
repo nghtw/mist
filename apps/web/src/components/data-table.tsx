@@ -63,6 +63,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog"
 import Thread from "./thread";
+import ThreadNotes from "./notes";
 //import { set } from "zod";
 
 interface tagsProps {
@@ -77,6 +78,7 @@ type ColumnProps = {
   author: string;
   createdAt: Date;
   updatedAt: Date;
+  note?: string;
   tags: { name: string; emoji: string | null }[];
 };
 
@@ -220,7 +222,6 @@ export const columns: ColumnDef<ColumnProps>[] = [
       console.log('ttid', id);
 
       return (
-        <div className="gap-x-4 flex">
           <Dialog>
             <DialogTrigger asChild>
               <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
@@ -236,23 +237,35 @@ export const columns: ColumnDef<ColumnProps>[] = [
               </DialogHeader>
             </DialogContent>
         </Dialog>
-        <Dialog>
+      )
+    },
+  },{
+    id: "note",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const { id, content, note } = row.original;
+
+      console.log('ttid', id);
+//  <ThreadNotes id={id} />
+      return (
+      <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-purple-800 hover:bg-purple-700 active:bg-purple-600">
-              Notatka
-            </Button>
+            <div className="w-40 cursor-pointer">
+            {note ? (note.length <= 100 ? note : note.slice(0, note.lastIndexOf(' ', 35)) + '...') : 
+            (
+              <Button className="text-white"> Dodaj notatkę +</Button>
+            )}
+            </div>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{content}</DialogTitle>
               <DialogDescription>
-                <Thread id={id} />
+               
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
       </Dialog>
-      </div>
-      
       )
     },
   },

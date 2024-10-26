@@ -113,21 +113,22 @@ model ContentChannelConfig {
 }
 
 
+
 model ContentThreads {
-  id        BigInt      @id @default(autoincrement())
-  content   String
+  id        BigInt         @id @default(autoincrement())
+  content   String         @db.Text
   author    String
   commentId ContentComments[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  tags      ThreadTag[]       // Relacja N:N z tagami
+  note      String?        @db.Text
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now())
+  tags      ThreadTag[]    // Relacja N:N z tagami
 }
 
 model ContentComments{
   id        BigInt      @id @default(autoincrement())
   threadId  BigInt
-  content   String
+  content   String      @db.Text
   author    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

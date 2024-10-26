@@ -24,6 +24,7 @@ export const getTopics = actionClient.action(async () => {
       createdAt: true,
       author: true,
       updatedAt: true,
+      note: true,
       tags: {
         select: {
           tag: {

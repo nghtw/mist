@@ -12,12 +12,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "5.14.0",
+    "@prisma/client": "5.21.1",
     "@types/node": "^20.12.7",
     "mysql2": "^3.9.4"
   },
   "devDependencies": {
     "dotenv-cli": "^7.4.2",
-    "prisma": "^5.14.0"
+    "prisma": "^5.21.1"
   }
 }
