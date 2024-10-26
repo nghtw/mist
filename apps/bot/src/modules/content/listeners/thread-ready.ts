@@ -19,6 +19,8 @@ import { assert } from "../../../utils/assert.js";
 import { upsertTag } from "../functions/upsertTag.js";
 import { deleteAllThreadTags } from "../functions/deleteAllThreadTags.js";
 import { upsertTagsForThread } from "../functions/upsertTagsForThread.js";
+import { deleteAllAttachments } from "../functions/deleteAllAttachments.js";
+import { upsertAttachment } from "../functions/upsertAttachment.js";
 // import { assert } from "../../../utils/assert.js";
 
 
@@ -136,6 +138,19 @@ export class BoardsThreadFetchListener extends Listener {
             for (const message of messages.values()) {
               console.log(`Wiadomość: ${message.content} author: ${message.author.username}`);
               await upsertComment(message,thread);
+
+               // Usuń istniejące załączniki dla komentarza
+                await deleteAllAttachments(message);
+
+                // Przetwarzaj załączniki
+                const attachments = message.attachments;
+                if (attachments.size > 0) {
+                  for (const attachment of attachments.values()) {
+                    // Zapisz załącznik do bazy danych
+                    await upsertAttachment(attachment, message);
+                  }
+                }
+
 
               // aktualizacja wszystkich reakcji
 

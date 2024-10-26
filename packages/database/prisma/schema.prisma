@@ -135,8 +135,22 @@ model ContentComments{
   ContentCommentReactions ContentCommentReactions[]
   
   ContentThreads ContentThreads @relation(fields: [threadId], references: [id])
-  //updatedAt DateTime @default(now()) @updatedAt
-   
+  
+  ContentCommentAttachment ContentCommentAttachment[]
+}
+
+
+model ContentCommentAttachment {
+  id        BigInt           @id
+  commentId BigInt
+  url       String
+  filename  String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+
+  comment   ContentComments  @relation(fields: [commentId], references: [id])
+
+  @@index([commentId])
 }
 
 
