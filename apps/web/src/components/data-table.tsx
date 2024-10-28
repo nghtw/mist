@@ -260,10 +260,10 @@ export function DataTable()  {
                   Otwórz
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="min-w-[900px] min-h-[700px]">
                 <DialogHeader>
-                  <DialogTitle>{content}</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="text-white pl-4 ">{content}</DialogTitle>
+                  <DialogDescription className="">
                     <Thread id={id} />
                   </DialogDescription>
                 </DialogHeader>
@@ -292,7 +292,7 @@ export function DataTable()  {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Notatka</DialogTitle>
+                <DialogTitle className="text-white">Notatka</DialogTitle>
                 <DialogDescription>
                 <ThreadNote id={id} note={note ?? ''} onNoteUpdate={handleNoteUpdate} />
                 </DialogDescription>

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from "../components/ui/avatar"
 import { ScrollArea } from "../components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip"
 import { formatDistanceToNow } from 'date-fns'
+import Image from 'next/image'
 
 function Thread({id}:{id:bigint}) {
 
@@ -51,13 +52,13 @@ function Thread({id}:{id:bigint}) {
 
     
   return (
-    <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-    <h2 className="text-2xl font-bold mb-4">Comments</h2>
+    <ScrollArea className="h-[700px] w-full rounded-md border p-4 text-white border-none">
+    
     {data.map((comment) => (
       <div key={comment.id.toString()} className="mb-6 last:mb-0">
         <div className="flex items-start space-x-4">
           <Avatar>
-            <AvatarFallback>{getInitials(comment.author)}</AvatarFallback>
+            <AvatarFallback className='text-black'>{getInitials(comment.author)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium">{comment.author.toString()}</p>
@@ -75,7 +76,12 @@ function Thread({id}:{id:bigint}) {
                     rel="noreferrer"
                     className="text-blue-500 hover:underline"
                   >
-                    {attachment.filename}
+                    <Image
+                    src={attachment.url}
+                    width={100}
+                    height={100}
+                    alt={attachment.filename}
+                    />
                   </a>
                 ))} 
               </div>
@@ -86,7 +92,7 @@ function Thread({id}:{id:bigint}) {
                   {comment.ContentCommentReactions.map((reaction, index) => (
                     <Tooltip key={index}>
                       <TooltipTrigger asChild>
-                        <span className="text-lg bg-gray-100 rounded-full px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
+                        <span className="text-lg bg-gray-800/0 rounded-full px-2 py-1 cursor-pointer hover:bg-gray-800 transition-colors">
                           {decodeURIComponent(reaction.emoji)}
                         </span>
                       </TooltipTrigger>

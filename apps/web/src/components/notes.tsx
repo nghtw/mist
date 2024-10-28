@@ -29,11 +29,11 @@ export const ThreadNote = ({ id, note, onNoteUpdate }: ThreadNotesProps) => {
   };
 
   return (
-    <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+    <ScrollArea className="h-[400px] w-full rounded-md border p-4 border-none">
       <textarea
         value={noteInput}
         onChange={(e) => handleInputChange(e.target.value)}
-        className="w-full min-h-60 p-2"
+        className="w-full min-h-60 p-2 bg-slate-900 border-none outline-none"
       />
       {hasChanges && (
         <div className='w-full flex justify-end pr-3'>
