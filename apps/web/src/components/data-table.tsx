@@ -256,7 +256,7 @@ export function DataTable()  {
         return (
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-blue-800 hover:bg-blue-700 active:bg-blue-600">
+                <Button className="bg-blue-900/50 hover:bg-blue-700/70 active:bg-blue-600 rounded-sm">
                   Otwórz
                 </Button>
               </DialogTrigger>
@@ -385,7 +385,7 @@ export function DataTable()  {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="table" className="ml-auto">
               Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -410,11 +410,11 @@ export function DataTable()  {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounde border-2 border-blue-800/10">
+        <Table >
           <TableHeader className="bg-slate-950 ">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-blue-500/40">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -430,12 +430,13 @@ export function DataTable()  {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="bg-gray-950 ">
+          <TableBody className="bg-gray-950">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="border-blue-500/20"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -467,7 +468,7 @@ export function DataTable()  {
         </div>
         <div className="space-x-2">
           <Button
-            variant="outline"
+            variant="table"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -475,7 +476,7 @@ export function DataTable()  {
             Previous
           </Button>
           <Button
-            variant="outline"
+            variant="table"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
