@@ -31,6 +31,9 @@ export class MistSapphireClient extends SapphireClient {
     this.stores.registerPath(join(this.rootData.root, "modules/debug"));
     this.stores.registerPath(join(this.rootData.root, "modules/managed-roles"));
     this.stores.registerPath(join(this.rootData.root, "modules/tickets"));
+    this.stores.registerPath(
+      join(this.rootData.root, "modules/role-message-stats")
+    );
   }
 
   public override async login(token?: string) {
