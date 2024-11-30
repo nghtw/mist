@@ -40,6 +40,7 @@ model Guild {
   ticketConfig        TicketConfig[]
   boardChannelsConfig BoardChannelConfig[]
   managedRolesConfig  ManagedRoleConfig[]
+  roleMessageStats    RoleMessageStats[]
 }
 
 model ManagedRoleConfig {
@@ -72,4 +73,14 @@ model TicketConfig {
   ticketCreatedMessage String?
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
+}
+
+model RoleMessageStats {
+  roleId       BigInt   @id
+  guildId      BigInt
+  guild        Guild    @relation(fields: [guildId], references: [id])
+  messageCount Int      @default(0)
+  timestamp    DateTime @default(now())
+
+  @@unique([guildId, roleId, timestamp])
 }
