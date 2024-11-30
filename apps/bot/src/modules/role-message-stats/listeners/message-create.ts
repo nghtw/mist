@@ -1,6 +1,6 @@
 import { Events, Listener } from "@sapphire/framework";
-import { assert } from "../../../utils/assert.js";
 import type { Message } from "discord.js";
+import { assert } from "../../../utils/assert.js";
 
 export class RoleMessageStatsMessageSentListener extends Listener<
   typeof Events.MessageCreate
