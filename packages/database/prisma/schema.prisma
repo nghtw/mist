@@ -40,7 +40,6 @@ model Guild {
   ticketConfig        TicketConfig[]
   boardChannelsConfig BoardChannelConfig[]
   managedRolesConfig  ManagedRoleConfig[]
-  roleMessageStats    RoleMessageStats[]
 }
 
 model ManagedRoleConfig {
@@ -76,9 +75,9 @@ model TicketConfig {
 }
 
 model RoleMessageStats {
-  roleId       BigInt   @id
+  id           BigInt   @id @default(autoincrement())
+  roleId       BigInt
   guildId      BigInt
-  guild        Guild    @relation(fields: [guildId], references: [id])
   messageCount Int      @default(0)
   timestamp    DateTime @default(now())
 
